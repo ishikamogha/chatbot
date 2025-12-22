@@ -12,14 +12,17 @@
 }
 
 body {
-    background: var(--bg-gradient);
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* AUTH */
+#authContainer {
+    display: flex;
+}
+
 .auth-card {
     background: white;
     padding: 35px;
@@ -159,3 +162,4 @@ body {
     font-style: italic;
     margin-left: 10px;
 }
+
