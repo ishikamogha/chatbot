@@ -7,13 +7,13 @@
 </head>
 <body>
 
-<!-- AUTH SECTION -->
+<!-- AUTH -->
 <div id="authContainer">
     <section id="loginPage" class="auth-card">
         <h2>User Login</h2>
         <input type="email" id="loginEmail" placeholder="Email">
         <input type="password" id="loginPassword" placeholder="Password">
-        <button onclick="handleLogin()" class="btn-main">Login</button>
+        <button class="btn-main" onclick="handleLogin()">Login</button>
         <p onclick="toggleAuth(true)">Don't have an account? Sign Up</p>
     </section>
 
@@ -22,19 +22,19 @@
         <input type="text" id="newName" placeholder="Full Name">
         <input type="email" id="newEmail" placeholder="Email">
         <input type="password" id="newPassword" placeholder="Password">
-        <button onclick="handleSignup()" class="btn-main">Create Account</button>
+        <button class="btn-main" onclick="handleSignup()">Create Account</button>
         <p onclick="toggleAuth(false)">Back to Login</p>
     </section>
 </div>
 
-<!-- CHAT SECTION -->
+<!-- CHAT -->
 <section id="chatPage">
     <header class="chat-header">
         <div class="user-info">
             <div class="online-dot"></div>
             <span id="displayUser">User</span>
         </div>
-        <button onclick="logout()" class="logout-btn">Logout</button>
+        <button class="logout-btn" onclick="logout()">Logout</button>
     </header>
 
     <div class="chat-container" id="chatContainer">
@@ -42,7 +42,7 @@
             <div class="message bot">
                 <div class="bubble">
                     Hi! I'm BotBae 🤖<br>
-                    Ask me anything like
+                    Ask me anything.
                 </div>
             </div>
         </div>
@@ -52,8 +52,8 @@
     </div>
 
     <div class="input-bar">
-        <input type="text" id="userInput" placeholder="Ask something...">
-        <button onclick="handleSend()" id="sendBtn">Send</button>
+        <input type="text" id="userInput" placeholder="Type your message...">
+        <button id="sendBtn" onclick="handleSend()">Send</button>
     </div>
 </section>
 
