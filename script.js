@@ -6,94 +6,57 @@ const localBrain = {
     "how are you": "Running on JavaScript and curiosity ⚡"
 };
 
-
-function cleanSearchTerm(input) {
-    let term = input.toLowerCase().trim();
-    const fillers = [
-        "what is", "who is", "define", "tell me about",
-        "meaning of", "explain"
-    ];
-    fillers.forEach(f => {
-        if (term.startsWith(f + " ")) {
-            term = term.replace(f + " ", "");
-        }
-    });
-    return term;
-}
-
-
-async function searchWikipedia(query) {
-    const url = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&format=json&origin=*`;
-
-    try {
-        const res = await fetch(url);
-        const data = await res.json();
-
-        if (!data.query.search.length) return null;
-
-        
-        return data.query.search[0].title;
-    } catch (err) {
-        console.error("Search error:", err);
-        return null;
-    }
-}
-
-
-async function getWikiSummary(title) {
-    const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`;
-
-    try {
-        const res = await fetch(url);
-        const data = await res.json();
-
-        if (!data.extract) return null;
-
-        return {
-            title: data.title,
-            extract: data.extract,
-            link: data.content_urls.desktop.page
-        };
-    } catch (err) {
-        console.error("Summary error:", err);
-        return null;
-    }
-}
-
-
+// AUTH TOGGLE
 function toggleAuth(isSignup) {
     loginPage.style.display = isSignup ? "none" : "block";
     signupPage.style.display = isSignup ? "block" : "none";
 }
 
+// SIGNUP
 function handleSignup() {
+    if (!newName.value || !newEmail.value || !newPassword.value) {
+        alert("Fill all fields");
+        return;
+    }
+
     const user = {
         name: newName.value,
         email: newEmail.value,
         pass: newPassword.value
     };
-    if (!user.email || !user.pass) return alert("Fill all fields");
+
     localStorage.setItem(user.email, JSON.stringify(user));
-    alert("Signup successful");
+    alert("Signup successful 🎉");
     toggleAuth(false);
 }
 
+// LOGIN
 function handleLogin() {
     const user = JSON.parse(localStorage.getItem(loginEmail.value));
+
     if (user && user.pass === loginPassword.value) {
         sessionStorage.setItem("loggedInUser", JSON.stringify(user));
-        location.reload();
+        showChat(user);
     } else {
-        alert("Invalid credentials");
+        alert("Invalid credentials!");
     }
 }
 
+// LOGOUT
 function logout() {
-    sessionStorage.clear();
-    location.reload();
+    sessionStorage.removeItem("loggedInUser");
+    authContainer.style.display = "flex";
+    chatPage.style.display = "none";
 }
 
+// SHOW CHAT
+function showChat(user) {
+    authContainer.style.display = "none";
+    chatPage.style.display = "flex";
+    displayUser.innerText = user.name;
+}
 
+// CHAT
 function addMsg(type, text) {
     const div = document.createElement("div");
     div.className = `message ${type}`;
@@ -103,38 +66,14 @@ function addMsg(type, text) {
 }
 
 async function handleSend() {
-    const rawText = userInput.value.trim();
-    if (!rawText) return;
+    const text = userInput.value.trim();
+    if (!text) return;
 
-    addMsg("user", rawText);
+    addMsg("user", text);
     userInput.value = "";
     typing.style.display = "block";
 
-    let reply = localBrain[rawText.toLowerCase()];
-
-    if (!reply) {
-        const cleaned = cleanSearchTerm(rawText);
-
-        
-        const pageTitle = await searchWikipedia(cleaned);
-
-        if (pageTitle) {
-           
-            const wiki = await getWikiSummary(pageTitle);
-
-            if (wiki) {
-                reply = `
-    🔍 <b>${wiki.title}</b><br><br>
-    ${wiki.extract}
-`;
-
-            } else {
-                reply = "I found data but couldn’t extract a summary 😕";
-            }
-        } else {
-            reply = "No results found. Try different keywords";
-        }
-    }
+    let reply = localBrain[text.toLowerCase()] || "Interesting question 🤔";
 
     setTimeout(() => {
         typing.style.display = "none";
@@ -142,16 +81,13 @@ async function handleSend() {
     }, 700);
 }
 
-
+// PAGE LOAD
 window.onload = () => {
     const user = JSON.parse(sessionStorage.getItem("loggedInUser"));
-    if (user) {
-        authContainer.style.display = "none";
-        chatPage.style.display = "flex";
-        displayUser.innerText = user.name;
-    }
+    if (user) showChat(user);
 };
 
+// ENTER KEY
 userInput.addEventListener("keypress", e => {
     if (e.key === "Enter") handleSend();
 });
