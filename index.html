@@ -1,89 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>BotBae - AI CHATBOT</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BotBae AI</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Header -->
+
+<div id="authContainer">
+    <section id="loginPage" class="auth-card">
+        <h2>User Login</h2>
+        <input type="email" id="loginEmail" placeholder="Email">
+        <input type="password" id="loginPassword" placeholder="Password">
+        <button onclick="handleLogin()" class="btn-main">Login</button>
+        <p onclick="toggleAuth(true)">Don't have an account? Sign Up</p>
+    </section>
+
+    <section id="signupPage" class="auth-card" style="display:none;">
+        <h2>Register</h2>
+        <input type="text" id="newName" placeholder="Full Name">
+        <input type="email" id="newEmail" placeholder="Email">
+        <input type="password" id="newPassword" placeholder="Password">
+        <button onclick="handleSignup()" class="btn-main">Create Account</button>
+        <p onclick="toggleAuth(false)">Back to Login</p>
+    </section>
+</div>
+
+<section id="chatPage">
     <header class="chat-header">
-        <div class="header-content">
-            <div class="bot-avatar">
-                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="20" cy="20" r="20" fill="url(#gradient)"/>
-                    <path d="M12 18C12 17.4477 12.4477 17 13 17H15C15.5523 17 16 17.4477 16 18V19C16 19.5523 15.5523 20 15 20H13C12.4477 20 12 19.5523 12 19V18Z" fill="white"/>
-                    <path d="M24 18C24 17.4477 24.4477 17 25 17H27C27.5523 17 28 17.4477 28 18V19C28 19.5523 27.5523 20 27 20H25C24.4477 20 24 19.5523 24 19V18Z" fill="white"/>
-                    <path d="M14 25C14 24.4477 14.4477 24 15 24H25C25.5523 24 26 24.4477 26 25C26 25.5523 25.5523 26 25 26H15C14.4477 26 14 25.5523 14 25Z" fill="white"/>
-                    <defs>
-                        <linearGradient id="gradient" x1="0" y1="0" x2="40" y2="40">
-                            <stop offset="0%" stop-color="#667eea"/>
-                            <stop offset="100%" stop-color="#764ba2"/>
-                        </linearGradient>
-                    </defs>
-                </svg>
-            </div>
-            <div class="header-text">
-                <h1>BotBae</h1>
-                <p class="status">
-                    <span class="status-indicator"></span>
-                    Smart. Sassy. At your service.
-                </p>
-            </div>
-            <!-- Dropdown -->
-            <div class="dropdown-container">
-                <button id="dropBtn">📚 Topics</button>
-                <div id="myDropdown">
-                    <a href="#" onclick="quickReply('cpu')">💻 CPU</a>
-                    <a href="#" onclick="quickReply('python')">🐍 Python</a>
-                    <a href="#" onclick="quickReply('react')">⚛️ React</a>
-                    <a href="#" onclick="quickReply('docker')">🐳 Docker</a>
-                    <a href="#" onclick="quickReply('ai')">🤖 AI</a>
-                    <a href="#" onclick="quickReply('help')">❓ Help</a>
-                </div>
-            </div>
+        <div class="user-info">
+            <div class="online-dot"></div>
+            <span id="displayUser">User</span>
         </div>
+        <button onclick="logout()" class="logout-btn">Logout</button>
     </header>
 
-    <!-- Chat Container -->
-    <div class="chat-container">
-        <div class="messages-wrapper">
-            <div class="messages" id="messages">
-                <!-- KEEP YOUR EXISTING WELCOME MESSAGE -->
-                <div class="message bot-message fade-in">
-                    <div class="message-content">
-                        <p>Hello! I'm your tech buddy. Ask me anything!</p>
-                        <span class="timestamp">Just now</span>
-                    </div>
+    <div class="chat-container" id="chatContainer">
+        <div id="messages">
+            <div class="message bot">
+                <div class="bubble">
+                    Hi! I'm BotBae 🤖  
+                    Ask me anything 
                 </div>
             </div>
         </div>
-
-        <!-- Typing Indicator -->
-        <div class="typing-indicator" id="typingIndicator" style="display: none;">
-            <div class="typing-content">
-                <div class="typing-dots">
-                    <span></span><span></span><span></span>
-                </div>
-                <p>BotBae is thinking...</p>
-            </div>
+        <div id="typing" class="typing-text" style="display:none;">
+            BotBae is thinking...
         </div>
     </div>
 
-    <!-- Input Area -->
-    <div class="input-container">
-        <div class="input-wrapper personal-style">
-            <input type="text" id="userInput" placeholder="Hiee, Ask me anything!" autocomplete="off">
-            <button id="sendBtn" class="send-btn">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span>Send</span>
-            </button>
-        </div>
-        <p class="input-hint">Try: CPU, Python, React, Docker, AI or click 📚 Topics</p>
+    <div class="input-bar">
+        <input type="text" id="userInput" placeholder="Ask something...">
+        <button onclick="handleSend()" id="sendBtn">Send</button>
     </div>
+</section>
 
-    <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
